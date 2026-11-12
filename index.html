@@ -2,88 +2,84 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#090d1b">
 <title>SHA-256 Pattern Lab</title>
 <style>
 :root{
-  --bg:#090d1b;--panel:#111a30;--panel2:#17233d;
-  --text:#f2f5ff;--muted:#9cabc9;--blue:#70b7ff;
-  --purple:#b69aff;--pink:#ff8ecb;--green:#45e3a6;
-  --red:#ff8098;--border:#293957;
+ --bg:#090d1b;--panel:#111a30;--text:#f2f5ff;
+ --muted:#9cabc9;--blue:#70b7ff;--purple:#b69aff;
+ --pink:#ff8ecb;--green:#45e3a6;--red:#ff8098;
+ --border:#293957
 }
 *{box-sizing:border-box}
 body{
-  margin:0;background:
-  radial-gradient(ellipse at 10% 0%,#294b8050,transparent 42%),
-  radial-gradient(ellipse at 95% 12%,#762c8050,transparent 35%),
-  var(--bg);color:var(--text);
-  font-family:Inter,system-ui,Segoe UI,sans-serif;
+ margin:0;background:
+ radial-gradient(ellipse at 10% 0%,#294b8050,transparent 42%),
+ radial-gradient(ellipse at 95% 12%,#762c8050,transparent 35%),
+ var(--bg);color:var(--text);
+ font-family:Inter,system-ui,Segoe UI,sans-serif
 }
 header{text-align:center;padding:55px 18px 35px}
 .tag{
-  display:inline-block;padding:7px 13px;border-radius:30px;
-  border:1px solid #536eb4;background:#1a2b4c;
-  color:#c8d9ff;font-size:11px;font-weight:900;letter-spacing:2px
+ display:inline-block;padding:7px 13px;border-radius:30px;
+ border:1px solid #536eb4;background:#1a2b4c;
+ color:#c8d9ff;font-size:11px;font-weight:900;letter-spacing:2px
 }
 h1{
-  font-size:clamp(39px,8vw,70px);line-height:1;
-  letter-spacing:-3px;margin:22px 0 15px;
-  background:linear-gradient(100deg,#72c2ff,#b59aff,#ff94d2);
-  color:transparent;background-clip:text;-webkit-background-clip:text
+ font-size:clamp(39px,8vw,70px);line-height:1;
+ letter-spacing:-3px;margin:22px 0 15px;
+ background:linear-gradient(100deg,#72c2ff,#b59aff,#ff94d2);
+ color:transparent;background-clip:text;-webkit-background-clip:text
 }
 header p{max-width:680px;margin:auto;color:var(--muted);line-height:1.7}
 main{width:min(1100px,93%);margin:auto;padding-bottom:65px}
-nav{
-  display:flex;gap:8px;overflow-x:auto;padding:5px 0 17px;
-  scrollbar-width:thin
-}
+nav{display:flex;gap:8px;overflow-x:auto;padding:5px 0 17px}
 nav button{
-  flex-shrink:0;margin:0;background:#182440;color:#cbd8f5;
-  border:1px solid var(--border);padding:11px 15px
+ flex-shrink:0;margin:0;background:#182440;color:#cbd8f5;
+ border:1px solid var(--border);padding:11px 15px
 }
 nav button.active{background:linear-gradient(100deg,#3679bd,#7959bc);color:white}
 .panel{
-  background:linear-gradient(145deg,#17233bf5,#10182bf5);
-  border:1px solid var(--border);border-radius:19px;
-  padding:23px;margin-bottom:17px;
-  box-shadow:0 16px 45px #0003
+ background:linear-gradient(145deg,#17233bf5,#10182bf5);
+ border:1px solid var(--border);border-radius:19px;
+ padding:23px;margin-bottom:17px;box-shadow:0 16px 45px #0003
 }
 .panel h2{margin:0 0 8px;font-size:21px}
 .panel p{color:var(--muted);font-size:14px;line-height:1.65}
 .kicker{font-size:11px;letter-spacing:2px;font-weight:900;color:var(--blue);margin-bottom:12px}
 label{display:block;font-size:13px;font-weight:750;margin:17px 0 8px;color:#dbe6ff}
 input,textarea{
-  width:100%;background:#080f20;border:1px solid #354766;
-  color:white;border-radius:10px;padding:13px;
-  font:14px ui-monospace,monospace;outline:none
+ width:100%;background:#080f20;border:1px solid #354766;
+ color:white;border-radius:10px;padding:13px;
+ font:14px ui-monospace,monospace;outline:none
 }
 input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #70b7ff18}
 textarea{min-height:100px;resize:vertical}
 button{
-  border:0;border-radius:10px;padding:12px 17px;margin-top:13px;
-  background:linear-gradient(100deg,#70b7ff,#b69aff);
-  color:#091225;font-weight:850;cursor:pointer;transition:.18s
+ border:0;border-radius:10px;padding:12px 17px;margin-top:13px;
+ background:linear-gradient(100deg,#70b7ff,#b69aff);
+ color:#091225;font-weight:850;cursor:pointer;transition:.18s
 }
 button:hover{filter:brightness(1.12);transform:translateY(-1px)}
 button:disabled{opacity:.5;cursor:wait}
 button.alt{background:#263653;color:#e6edff;border:1px solid #405578}
 button.small{font-size:12px;padding:8px 11px}
 .output{
-  margin-top:15px;background:#080f20;border:1px solid #2a3b5b;
-  border-radius:12px;padding:15px;overflow-wrap:anywhere;min-height:42px
+ margin-top:15px;background:#080f20;border:1px solid #2a3b5b;
+ border-radius:12px;padding:15px;overflow-wrap:anywhere;min-height:42px
 }
 .output pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;color:#a9d6ff;font:12px/1.8 ui-monospace,monospace}
 .muted{color:var(--muted)}
 .good{color:var(--green);font-weight:800}
 .bad{color:var(--red);font-weight:800}
 .notice{
-  padding:14px;border:1px solid #80613c;background:#34271866;
-  color:#ffdfa9;border-radius:12px;font-size:13px;line-height:1.65;margin-top:14px
+ padding:14px;border:1px solid #80613c;background:#34271866;
+ color:#ffdfa9;border-radius:12px;font-size:13px;line-height:1.65;margin-top:14px
 }
 .info{
-  padding:14px;border:1px solid #395b8c;background:#172b4966;
-  color:#c5ddff;border-radius:12px;font-size:13px;line-height:1.65;margin-top:14px
+ padding:14px;border:1px solid #395b8c;background:#172b4966;
+ color:#c5ddff;border-radius:12px;font-size:13px;line-height:1.65;margin-top:14px
 }
 .words{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:7px;margin-top:12px}
 .word{background:#0d1830;border:1px solid #2b4268;padding:9px;border-radius:8px;color:#b8dfff;font:12px ui-monospace,monospace}
@@ -95,9 +91,9 @@ button.small{font-size:12px;padding:8px 11px}
 .tool{display:none}
 .tool.active{display:block}
 .copy-fallback{
-  display:block;margin-top:12px;width:100%;min-height:85px;
-  border:1px solid var(--green);background:#0b1428;color:#a9d6ff;
-  font:12px/1.7 ui-monospace,monospace
+ display:block;margin-top:12px;width:100%;min-height:85px;
+ border:1px solid var(--green);background:#0b1428;color:#a9d6ff;
+ font:12px/1.7 ui-monospace,monospace
 }
 footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1px solid #24314a}
 @media(max-width:550px){
@@ -112,6 +108,7 @@ footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1p
  <h1>SHA-256<br>PATTERN LAB</h1>
  <p>Explore the mathematics behind SHA-256. Calculate schedules, test candidate messages, compare patterns and reverse the message-schedule recurrence.</p>
 </header>
+
 <main>
 <nav aria-label="Research tools">
  <button class="active" data-tab="analyser">Hash analyser</button>
@@ -132,8 +129,7 @@ footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1p
   <div class="output" id="hashOutput">Waiting for a hash...</div>
   <div class="notice">
    A digest alone does not reveal its final 16 schedule words.
-   There are 2^512 possible combinations of those words.
-   The analyser will never invent a recovered answer.
+   Those words contain 512 bits, while a SHA-256 digest contains 256 bits.
   </div>
  </div>
 </section>
@@ -142,7 +138,7 @@ footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1p
  <div class="panel">
   <div class="kicker">02 / CANDIDATE VERIFICATION</div>
   <h2>Test a proposed message</h2>
-  <p>Enter a known test message and a target digest. The app checks whether the message matches, then displays its exact final 16 schedule words if it does.</p>
+  <p>Enter a test message and a target digest. The app checks whether the message matches and displays its final 16 schedule words if it does.</p>
   <label for="targetHash">Target SHA-256 hash</label>
   <input id="targetHash" maxlength="64" placeholder="64-character hash">
   <label for="candidateMessage">Proposed test message</label>
@@ -168,7 +164,7 @@ footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1p
  <div class="panel">
   <div class="kicker">04 / MATHEMATICAL PATTERNS</div>
   <h2>Compare two messages</h2>
-  <p>Compare the hash outputs and message schedules. The Hamming distance counts how many individual bits differ.</p>
+  <p>Compare hash outputs and message schedules. Hamming distance counts how many individual bits differ.</p>
   <label for="messageA">Message A</label>
   <input id="messageA" placeholder="First test message">
   <label for="messageB">Message B</label>
@@ -212,12 +208,12 @@ All arithmetic is modulo 2^32.
   <div class="stat"><strong>64</strong><span>Total schedule words</span></div>
   <div class="stat"><strong>32 bits</strong><span>Each schedule word</span></div>
   <div class="stat"><strong>2^512</strong><span>Possible final word sets</span></div>
-  <div class="stat"><strong>0 cost</strong><span>No API or subscription</span></div>
+  <div class="stat"><strong>£0</strong><span>No API or subscription</span></div>
  </div>
 </section>
 </main>
 
-<footer>SHA-256 PATTERN LAB · Version 2.1 · All calculations run locally in your browser.</footer>
+<footer>SHA-256 PATTERN LAB · Version 2.2 · All calculations run locally in your browser.</footer>
 
 <script>
 "use strict";
@@ -313,15 +309,16 @@ function renderWords(words,start,end){
  return grid;
 }
 
-/* IMPROVED COPY BUTTON
-   Tries modern clipboard first, then uses a fallback.
-   If both fail, it displays selectable text for manual copying.
+/* FIXED COPY BUTTON
+   First attempts synchronous copying during the actual click.
+   This avoids losing the browser's user-gesture permission.
+   Then tries the modern clipboard API as a backup.
 */
 function copyButton(text){
  const b=document.createElement("button");
  b.className="alt small";
- b.textContent="Copy words";
  b.type="button";
+ b.textContent="Copy words";
 
  b.onclick=async()=>{
   b.disabled=true;
@@ -329,42 +326,38 @@ function copyButton(text){
 
   let copied=false;
 
-  // Method 1: Modern clipboard API.
+  // Attempt 1: synchronous copy inside the click event.
+  let area=document.createElement("textarea");
+  area.value=text;
+  area.setAttribute("readonly","");
+  area.style.position="fixed";
+  area.style.left="-9999px";
+  area.style.top="0";
+  document.body.appendChild(area);
+
   try{
-   if(navigator.clipboard && window.isSecureContext){
-    await navigator.clipboard.writeText(text);
-    copied=true;
-   }
+   area.focus();
+   area.select();
+   area.setSelectionRange(0,area.value.length);
+   copied=document.execCommand("copy");
   }catch(error){
    copied=false;
   }
 
-  // Method 2: Backup clipboard method.
-  if(!copied){
-   let area=null;
+  area.remove();
+
+  // Attempt 2: modern clipboard API.
+  if(!copied && navigator.clipboard && window.isSecureContext){
    try{
-    area=document.createElement("textarea");
-    area.value=text;
-    area.setAttribute("readonly","");
-    area.style.position="fixed";
-    area.style.left="-9999px";
-    area.style.top="0";
-    area.style.opacity="0";
-    document.body.appendChild(area);
-    area.focus();
-    area.select();
-    area.setSelectionRange(0,area.value.length);
-    copied=document.execCommand("copy");
+    await navigator.clipboard.writeText(text);
+    copied=true;
    }catch(error){
     copied=false;
-   }finally{
-    if(area)area.remove();
    }
   }
 
   b.disabled=false;
 
-  // Successful copy.
   if(copied){
    b.textContent="COPIED ✓";
    b.style.background="#123d35";
@@ -373,13 +366,14 @@ function copyButton(text){
    return;
   }
 
-  // Both clipboard methods failed: show manual-copy text.
-  b.textContent="COPY BLOCKED — SELECT TEXT BELOW";
+  // Manual fallback if the browser blocks both methods.
+  b.textContent="SELECT TEXT BELOW";
   b.style.background="#49351e";
   b.style.borderColor="#ffca80";
   b.style.color="#ffdfa9";
 
   let fallback=b.parentElement.querySelector(".copy-fallback");
+
   if(!fallback){
    fallback=document.createElement("textarea");
    fallback.className="copy-fallback";
@@ -393,21 +387,24 @@ function copyButton(text){
   fallback.select();
 
   let message=b.parentElement.querySelector(".copy-message");
+
   if(!message){
    message=document.createElement("p");
    message.className="copy-message bad";
    b.insertAdjacentElement("afterend",message);
   }
-  message.textContent="Automatic copying was blocked. The words are selected above: press Ctrl+C to copy them.";
- };
 
+  message.textContent="Automatic copying was blocked. The words are selected above. Press Ctrl+C to copy them.";
+ };
  return b;
 }
 
 function parseLast(text){
  const parts=text.trim().split(/[\s,]+/).filter(Boolean);
  if(parts.length!==16)throw Error("Exactly 16 words are required.");
- if(!parts.every(x=>/^[0-9a-fA-F]{8}$/.test(x)))throw Error("Every word must contain exactly eight hexadecimal characters.");
+ if(!parts.every(x=>/^[0-9a-fA-F]{8}$/.test(x))){
+  throw Error("Every word must contain exactly eight hexadecimal characters.");
+ }
  return parts.map(x=>parseInt(x,16)>>>0);
 }
 
@@ -432,65 +429,93 @@ document.querySelectorAll("nav button").forEach(button=>{
 $("analyse").onclick=()=>{
  const h=$("hashInput").value.trim().toLowerCase();
  const out=$("hashOutput");
+
  if(!/^[0-9a-f]{64}$/.test(h)){
-  show(out,"Invalid hash. A SHA-256 digest must contain 64 hexadecimal characters.","bad");return;
+  show(out,"Invalid hash. A SHA-256 digest must contain 64 hexadecimal characters.","bad");
+  return;
  }
+
  show(out,"Valid SHA-256 digest.","good");
  add(out,"Digest: "+h);
  add(out,"Length: 256 bits / 32 bytes.");
  add(out,"A digest does not reveal a unique message schedule.");
- add(out,"The final 16 words contain 512 bits. The digest alone cannot identify them.");
+ add(out,"The final 16 words contain 512 bits.");
 };
 
 $("verifyCandidate").onclick=async()=>{
  const out=$("candidateOutput");
  const h=$("targetHash").value.trim().toLowerCase();
  const message=$("candidateMessage").value;
+
  if(!/^[0-9a-f]{64}$/.test(h)){
-  show(out,"Enter a valid 64-character target hash.","bad");return;
+  show(out,"Enter a valid 64-character target hash.","bad");
+  return;
  }
+
  try{
   show(out,"Calculating...");
   const result=await calculate(message);
   out.replaceChildren();
   add(out,"Calculated digest: "+result.hash);
+
   if(result.hash!==h){
-   add(out,"Candidate does not match this digest.","bad");return;
+   add(out,"Candidate does not match this digest.","bad");
+   return;
   }
+
   add(out,"Exact match! Candidate verified.","good");
   add(out,"Final 16 schedule words:");
   out.appendChild(renderWords(result.words,48,64));
   out.appendChild(copyButton(Array.from(result.words.slice(48)).map(hex).join(" ")));
- }catch(e){show(out,e.message,"bad")}
+ }catch(e){
+  show(out,e.message,"bad");
+ }
 };
 
 $("calculate").onclick=async()=>{
  const out=$("scheduleOutput");
+
  try{
   show(out,"Calculating...");
   const r=await calculate($("message").value);
   out.replaceChildren();
+
   add(out,"SHA-256: "+r.hash,"good");
   add(out,"Complete 64-word message schedule:");
   out.appendChild(renderWords(r.words,0,64));
+
   const recovered=reverseSchedule(r.words.slice(48));
   const verified=recovered.every((x,i)=>x===r.words[i]);
-  add(out,verified?"Reverse verification passed: all 64 words match.":"Verification failed.",verified?"good":"bad");
-  out.appendChild(copyButton(Array.from(r.words.slice(48)).map(hex).join(" ")));
- }catch(e){show(out,e.message,"bad")}
+
+  add(
+   out,
+   verified?"Reverse verification passed: all 64 words match.":"Verification failed.",
+   verified?"good":"bad"
+  );
+
+  out.appendChild(
+   copyButton(Array.from(r.words.slice(48)).map(hex).join(" "))
+  );
+ }catch(e){
+  show(out,e.message,"bad");
+ }
 };
 
 $("compare").onclick=async()=>{
  const out=$("patternOutput");
+
  try{
   show(out,"Comparing...");
   const a=await calculate($("messageA").value);
   const b=await calculate($("messageB").value);
+
   const hashA=Uint8Array.from(a.hash.match(/../g),x=>parseInt(x,16));
   const hashB=Uint8Array.from(b.hash.match(/../g),x=>parseInt(x,16));
+
   const hashDistance=hamming(hashA,hashB);
   const wordDistance=hamming(a.words.slice(48),b.words.slice(48));
   const totalWords=hamming(a.words,b.words);
+
   out.replaceChildren();
   add(out,"Hash A: "+a.hash);
   add(out,"Hash B: "+b.hash);
@@ -498,22 +523,36 @@ $("compare").onclick=async()=>{
   add(out,"Final 16 schedule bit differences: "+wordDistance+" / 512");
   add(out,"Full schedule bit differences: "+totalWords+" / 2048");
   add(out,"These are measured differences, not a formula for reversing a digest.");
- }catch(e){show(out,e.message,"bad")}
+ }catch(e){
+  show(out,e.message,"bad");
+ }
 };
 
 $("reverse").onclick=()=>{
  const out=$("reverseOutput");
+
  try{
   const last=parseLast($("lastWords").value);
   const all=reverseSchedule(last);
   const check=schedule(all.slice(0,16));
   const verified=check.every((x,i)=>x===all[i]);
+
   out.replaceChildren();
   add(out,"Recovered W0 through W15:","good");
   out.appendChild(renderWords(all,0,16));
-  add(out,verified?"Forward verification passed.":"Verification failed.",verified?"good":"bad");
-  out.appendChild(copyButton(Array.from(all.slice(0,16)).map(hex).join(" ")));
- }catch(e){show(out,e.message,"bad")}
+
+  add(
+   out,
+   verified?"Forward verification passed.":"Verification failed.",
+   verified?"good":"bad"
+  );
+
+  out.appendChild(
+   copyButton(Array.from(all.slice(0,16)).map(hex).join(" "))
+  );
+ }catch(e){
+  show(out,e.message,"bad");
+ }
 };
 </script>
 </body>
