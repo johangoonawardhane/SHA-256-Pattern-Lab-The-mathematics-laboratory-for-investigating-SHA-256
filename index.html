@@ -94,6 +94,11 @@ button.small{font-size:12px;padding:8px 11px}
 .stat span{font-size:11px;color:var(--muted)}
 .tool{display:none}
 .tool.active{display:block}
+.copy-fallback{
+  display:block;margin-top:12px;width:100%;min-height:85px;
+  border:1px solid var(--green);background:#0b1428;color:#a9d6ff;
+  font:12px/1.7 ui-monospace,monospace
+}
 footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1px solid #24314a}
 @media(max-width:550px){
  header{padding-top:40px}.panel{padding:17px}
@@ -107,7 +112,6 @@ footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1p
  <h1>SHA-256<br>PATTERN LAB</h1>
  <p>Explore the mathematics behind SHA-256. Calculate schedules, test candidate messages, compare patterns and reverse the message-schedule recurrence.</p>
 </header>
-
 <main>
 <nav aria-label="Research tools">
  <button class="active" data-tab="analyser">Hash analyser</button>
@@ -199,7 +203,6 @@ W[t-16] = W[t] - σ1(W[t-2])
         - W[t-7] - σ0(W[t-15])
 
 All arithmetic is modulo 2^32.
-
 σ0(x) = ROTR7(x) XOR ROTR18(x) XOR SHR3(x)
 σ1(x) = ROTR17(x) XOR ROTR19(x) XOR SHR10(x)</pre>
  </div>
@@ -214,7 +217,7 @@ All arithmetic is modulo 2^32.
 </section>
 </main>
 
-<footer>SHA-256 PATTERN LAB · Version 2.0 · All calculations run locally in your browser.</footer>
+<footer>SHA-256 PATTERN LAB · Version 2.1 · All calculations run locally in your browser.</footer>
 
 <script>
 "use strict";
@@ -310,18 +313,94 @@ function renderWords(words,start,end){
  return grid;
 }
 
+/* IMPROVED COPY BUTTON
+   Tries modern clipboard first, then uses a fallback.
+   If both fail, it displays selectable text for manual copying.
+*/
 function copyButton(text){
  const b=document.createElement("button");
  b.className="alt small";
  b.textContent="Copy words";
+ b.type="button";
+
  b.onclick=async()=>{
+  b.disabled=true;
+  b.textContent="Copying...";
+
+  let copied=false;
+
+  // Method 1: Modern clipboard API.
   try{
-   await navigator.clipboard.writeText(text);
-   b.textContent="Copied!";
-  }catch{
-   b.textContent="Copy unavailable";
+   if(navigator.clipboard && window.isSecureContext){
+    await navigator.clipboard.writeText(text);
+    copied=true;
+   }
+  }catch(error){
+   copied=false;
   }
+
+  // Method 2: Backup clipboard method.
+  if(!copied){
+   let area=null;
+   try{
+    area=document.createElement("textarea");
+    area.value=text;
+    area.setAttribute("readonly","");
+    area.style.position="fixed";
+    area.style.left="-9999px";
+    area.style.top="0";
+    area.style.opacity="0";
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    area.setSelectionRange(0,area.value.length);
+    copied=document.execCommand("copy");
+   }catch(error){
+    copied=false;
+   }finally{
+    if(area)area.remove();
+   }
+  }
+
+  b.disabled=false;
+
+  // Successful copy.
+  if(copied){
+   b.textContent="COPIED ✓";
+   b.style.background="#123d35";
+   b.style.borderColor="#45e3a6";
+   b.style.color="#45e3a6";
+   return;
+  }
+
+  // Both clipboard methods failed: show manual-copy text.
+  b.textContent="COPY BLOCKED — SELECT TEXT BELOW";
+  b.style.background="#49351e";
+  b.style.borderColor="#ffca80";
+  b.style.color="#ffdfa9";
+
+  let fallback=b.parentElement.querySelector(".copy-fallback");
+  if(!fallback){
+   fallback=document.createElement("textarea");
+   fallback.className="copy-fallback";
+   fallback.setAttribute("aria-label","Select these words and copy manually");
+   fallback.rows=3;
+   b.insertAdjacentElement("afterend",fallback);
+  }
+
+  fallback.value=text;
+  fallback.focus();
+  fallback.select();
+
+  let message=b.parentElement.querySelector(".copy-message");
+  if(!message){
+   message=document.createElement("p");
+   message.className="copy-message bad";
+   b.insertAdjacentElement("afterend",message);
+  }
+  message.textContent="Automatic copying was blocked. The words are selected above: press Ctrl+C to copy them.";
  };
+
  return b;
 }
 
