@@ -2,558 +2,923 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090d1b">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SHA-256 Pattern Lab</title>
 <style>
-:root{
- --bg:#090d1b;--panel:#111a30;--text:#f2f5ff;
- --muted:#9cabc9;--blue:#70b7ff;--purple:#b69aff;
- --pink:#ff8ecb;--green:#45e3a6;--red:#ff8098;
- --border:#293957
+:root {
+  --bg:#080b16;
+  --panel:#11182b;
+  --panel2:#17213a;
+  --line:#283653;
+  --text:#edf3ff;
+  --muted:#9aabc9;
+  --cyan:#55e6ff;
+  --purple:#a78bfa;
+  --pink:#ff72c6;
+  --green:#42e6a4;
+  --red:#ff7185;
 }
 *{box-sizing:border-box}
 body{
- margin:0;background:
- radial-gradient(ellipse at 10% 0%,#294b8050,transparent 42%),
- radial-gradient(ellipse at 95% 12%,#762c8050,transparent 35%),
- var(--bg);color:var(--text);
- font-family:Inter,system-ui,Segoe UI,sans-serif
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 15% 0%,#17234b 0,transparent 40%),
+    radial-gradient(ellipse at 90% 15%,#301644 0,transparent 35%),
+    var(--bg);
+  font-family:Inter,system-ui,Arial,sans-serif;
+  min-height:100vh;
 }
-header{text-align:center;padding:55px 18px 35px}
-.tag{
- display:inline-block;padding:7px 13px;border-radius:30px;
- border:1px solid #536eb4;background:#1a2b4c;
- color:#c8d9ff;font-size:11px;font-weight:900;letter-spacing:2px
+header{
+  padding:35px 20px 25px;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+}
+.logo{
+  display:inline-block;
+  color:var(--cyan);
+  border:1px solid #3b7892;
+  border-radius:30px;
+  padding:7px 14px;
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:800;
 }
 h1{
- font-size:clamp(39px,8vw,70px);line-height:1;
- letter-spacing:-3px;margin:22px 0 15px;
- background:linear-gradient(100deg,#72c2ff,#b59aff,#ff94d2);
- color:transparent;background-clip:text;-webkit-background-clip:text
+  margin:17px 0 8px;
+  font-size:clamp(29px,6vw,52px);
+  letter-spacing:-2px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
-header p{max-width:680px;margin:auto;color:var(--muted);line-height:1.7}
-main{width:min(1100px,93%);margin:auto;padding-bottom:65px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:5px 0 17px}
-nav button{
- flex-shrink:0;margin:0;background:#182440;color:#cbd8f5;
- border:1px solid var(--border);padding:11px 15px
+header p{color:var(--muted);margin:0}
+main{max-width:1150px;margin:auto;padding:25px 17px 65px}
+nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:9px;
+  margin:10px 0 25px;
 }
-nav button.active{background:linear-gradient(100deg,#3679bd,#7959bc);color:white}
+nav button,.btn{
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--text);
+  padding:11px 16px;
+  border-radius:11px;
+  cursor:pointer;
+  font-weight:700;
+  transition:.2s;
+}
+nav button:hover,.btn:hover{border-color:var(--cyan);transform:translateY(-1px)}
+nav button.active{
+  background:linear-gradient(110deg,#17475a,#34265e);
+  border-color:var(--cyan);
+  color:white;
+}
 .panel{
- background:linear-gradient(145deg,#17233bf5,#10182bf5);
- border:1px solid var(--border);border-radius:19px;
- padding:23px;margin-bottom:17px;box-shadow:0 16px 45px #0003
+  display:none;
+  background:linear-gradient(145deg,#121b30,#0d1425);
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:24px;
+  box-shadow:0 15px 50px #0004;
 }
-.panel h2{margin:0 0 8px;font-size:21px}
-.panel p{color:var(--muted);font-size:14px;line-height:1.65}
-.kicker{font-size:11px;letter-spacing:2px;font-weight:900;color:var(--blue);margin-bottom:12px}
-label{display:block;font-size:13px;font-weight:750;margin:17px 0 8px;color:#dbe6ff}
-input,textarea{
- width:100%;background:#080f20;border:1px solid #354766;
- color:white;border-radius:10px;padding:13px;
- font:14px ui-monospace,monospace;outline:none
+.panel.active{display:block}
+h2{margin:0 0 9px;font-size:25px}
+h3{margin:22px 0 10px}
+.description{color:var(--muted);line-height:1.6;margin-top:0}
+label{display:block;font-weight:700;margin:17px 0 8px}
+input,textarea,select{
+  width:100%;
+  color:var(--text);
+  background:#080f20;
+  border:1px solid #344563;
+  border-radius:10px;
+  padding:13px;
+  font:inherit;
+  outline:none;
 }
-input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #70b7ff18}
-textarea{min-height:100px;resize:vertical}
-button{
- border:0;border-radius:10px;padding:12px 17px;margin-top:13px;
- background:linear-gradient(100deg,#70b7ff,#b69aff);
- color:#091225;font-weight:850;cursor:pointer;transition:.18s
+input:focus,textarea:focus,select:focus{border-color:var(--cyan)}
+textarea{min-height:105px;resize:vertical}
+button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.btn.primary{
+  background:linear-gradient(100deg,#087c9a,#6745a9);
+  border:0;
 }
-button:hover{filter:brightness(1.12);transform:translateY(-1px)}
-button:disabled{opacity:.5;cursor:wait}
-button.alt{background:#263653;color:#e6edff;border:1px solid #405578}
-button.small{font-size:12px;padding:8px 11px}
-.output{
- margin-top:15px;background:#080f20;border:1px solid #2a3b5b;
- border-radius:12px;padding:15px;overflow-wrap:anywhere;min-height:42px
+.btn.copy{background:#193c3c;border-color:#28776b}
+.btn.small{padding:8px 12px;font-size:12px}
+.result{
+  margin-top:18px;
+  padding:16px;
+  background:#080f20;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow-wrap:anywhere;
 }
-.output pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;color:#a9d6ff;font:12px/1.8 ui-monospace,monospace}
+.hash{
+  color:var(--green);
+  font-family:ui-monospace,monospace;
+  line-height:1.8;
+  word-break:break-all;
+}
 .muted{color:var(--muted)}
-.good{color:var(--green);font-weight:800}
-.bad{color:var(--red);font-weight:800}
+.status{margin-top:12px;font-weight:700}
+.good{color:var(--green)}
+.bad{color:var(--red)}
+.info{color:var(--cyan)}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+  margin-top:15px;
+}
+.stat{
+  background:#0a1224;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px;
+}
+.stat strong{display:block;font-size:24px;color:var(--cyan);margin-top:5px}
+.word-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(135px,1fr));
+  gap:8px;
+  margin-top:13px;
+}
+.word{
+  background:#0a1224;
+  border:1px solid #263957;
+  padding:10px;
+  border-radius:8px;
+  font-family:ui-monospace,monospace;
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+.word b{display:block;color:var(--purple);margin-bottom:5px}
+.copy-status{font-size:12px;margin-left:4px}
 .notice{
- padding:14px;border:1px solid #80613c;background:#34271866;
- color:#ffdfa9;border-radius:12px;font-size:13px;line-height:1.65;margin-top:14px
+  padding:13px;
+  border-left:3px solid var(--purple);
+  background:#17152c;
+  color:#d7d2f4;
+  border-radius:7px;
+  line-height:1.55;
+  margin:15px 0;
 }
-.info{
- padding:14px;border:1px solid #395b8c;background:#172b4966;
- color:#c5ddff;border-radius:12px;font-size:13px;line-height:1.65;margin-top:14px
-}
-.words{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:7px;margin-top:12px}
-.word{background:#0d1830;border:1px solid #2b4268;padding:9px;border-radius:8px;color:#b8dfff;font:12px ui-monospace,monospace}
-.word b{color:#718ab9;margin-right:5px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:15px}
-.stat{background:#0b1428;border:1px solid #293957;padding:13px;border-radius:11px}
-.stat strong{display:block;color:#c5aaff;font-size:19px}
-.stat span{font-size:11px;color:var(--muted)}
-.tool{display:none}
-.tool.active{display:block}
-.copy-fallback{
- display:block;margin-top:12px;width:100%;min-height:85px;
- border:1px solid var(--green);background:#0b1428;color:#a9d6ff;
- font:12px/1.7 ui-monospace,monospace
-}
-footer{text-align:center;padding:24px;color:#7584a5;font-size:12px;border-top:1px solid #24314a}
-@media(max-width:550px){
- header{padding-top:40px}.panel{padding:17px}
- .stats{grid-template-columns:repeat(2,1fr)}
-}
+table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--cyan)}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
+
 <header>
- <div class="tag">FREE CRYPTOGRAPHY RESEARCH LAB</div>
- <h1>SHA-256<br>PATTERN LAB</h1>
- <p>Explore the mathematics behind SHA-256. Calculate schedules, test candidate messages, compare patterns and reverse the message-schedule recurrence.</p>
+  <div class="logo">MATHEMATICS LABORATORY</div>
+  <h1>SHA-256 Pattern Lab</h1>
+  <p>Explore hashing, message schedules and mathematical patterns.</p>
 </header>
 
 <main>
-<nav aria-label="Research tools">
- <button class="active" data-tab="analyser">Hash analyser</button>
- <button data-tab="candidate">Candidate test</button>
- <button data-tab="schedule">Schedule lab</button>
- <button data-tab="patterns">Pattern explorer</button>
- <button data-tab="reverse">Reverse lab</button>
+<nav>
+  <button class="active" data-tab="analyser">Hash Analyser</button>
+  <button data-tab="schedule">Schedule Lab</button>
+  <button data-tab="reverse">Reverse Lab</button>
+  <button data-tab="patterns">Pattern Explorer</button>
+  <button data-tab="verifier">Input Verifier</button>
 </nav>
 
-<section class="tool active" id="analyser">
- <div class="panel">
-  <div class="kicker">01 / HASH INSPECTION</div>
-  <h2>Analyse a SHA-256 digest</h2>
-  <p>Enter a SHA-256 hash to inspect its format and understand the information it contains.</p>
-  <label for="hashInput">64-character hexadecimal digest</label>
-  <input id="hashInput" maxlength="64" placeholder="Paste SHA-256 hash...">
-  <button id="analyse">Analyse digest</button>
-  <div class="output" id="hashOutput">Waiting for a hash...</div>
-  <div class="notice">
-   A digest alone does not reveal its final 16 schedule words.
-   Those words contain 512 bits, while a SHA-256 digest contains 256 bits.
+<section class="panel active" id="analyser">
+  <h2>01 — Hash Analyser</h2>
+  <p class="description">Inspect a SHA-256 digest and its basic properties.</p>
+
+  <label for="hashInput">SHA-256 digest</label>
+  <textarea id="hashInput" placeholder="Paste a 64-character SHA-256 hash here..."></textarea>
+
+  <div class="actions">
+    <button class="btn primary" id="analyseHash">Analyse digest</button>
+    <button class="btn" id="clearHash">Clear</button>
   </div>
- </div>
+  <div id="hashResult"></div>
 </section>
 
-<section class="tool" id="candidate">
- <div class="panel">
-  <div class="kicker">02 / CANDIDATE VERIFICATION</div>
-  <h2>Test a proposed message</h2>
-  <p>Enter a test message and a target digest. The app checks whether the message matches and displays its final 16 schedule words if it does.</p>
-  <label for="targetHash">Target SHA-256 hash</label>
-  <input id="targetHash" maxlength="64" placeholder="64-character hash">
-  <label for="candidateMessage">Proposed test message</label>
-  <input id="candidateMessage" placeholder="Enter a test message">
-  <button id="verifyCandidate">Verify candidate</button>
-  <div class="output" id="candidateOutput">Ready to verify.</div>
- </div>
+<section class="panel" id="schedule">
+  <h2>02 — Schedule Laboratory</h2>
+  <p class="description">Enter a message to calculate its SHA-256 hash and message schedule.</p>
+
+  <label for="scheduleInput">Test message</label>
+  <input id="scheduleInput" value="bum" placeholder="Enter a message">
+
+  <label for="blockNumber">Block number (starts at 0)</label>
+  <input id="blockNumber" type="number" min="0" value="0">
+
+  <div class="actions">
+    <button class="btn primary" id="calculateSchedule">Calculate schedule</button>
+    <button class="btn" id="useBum">Load example: bum</button>
+  </div>
+  <div id="scheduleResult"></div>
 </section>
 
-<section class="tool" id="schedule">
- <div class="panel">
-  <div class="kicker">03 / MESSAGE SCHEDULE</div>
-  <h2>Calculate all 64 words</h2>
-  <p>Enter a test message. The browser calculates its SHA-256 digest, padded final block and complete 64-word schedule.</p>
-  <label for="message">Test message</label>
-  <input id="message" placeholder="Try bum, hello, tree or map">
-  <button id="calculate">Calculate all words</button>
-  <div class="output" id="scheduleOutput">Your results will appear here.</div>
- </div>
+<section class="panel" id="reverse">
+  <h2>03 — Reverse Schedule Lab</h2>
+  <p class="description">
+    Use the final 16 message-schedule words to calculate the earlier words.
+  </p>
+
+  <div class="notice">
+    This reverses the SHA-256 message-schedule expansion. It does not reverse
+    the final SHA-256 digest into an original message.
+  </div>
+
+  <label for="reverseInput">Final 16 words: W48 to W63</label>
+  <textarea id="reverseInput" placeholder="Enter 16 hexadecimal words separated by spaces..."></textarea>
+
+  <div class="actions">
+    <button class="btn primary" id="reverseSchedule">Reverse schedule</button>
+    <button class="btn" id="loadExample">Load bum example</button>
+  </div>
+  <div id="reverseResult"></div>
 </section>
 
-<section class="tool" id="patterns">
- <div class="panel">
-  <div class="kicker">04 / MATHEMATICAL PATTERNS</div>
-  <h2>Compare two messages</h2>
-  <p>Compare hash outputs and message schedules. Hamming distance counts how many individual bits differ.</p>
+<section class="panel" id="patterns">
+  <h2>04 — Pattern Explorer</h2>
+  <p class="description">
+    Compare two messages and examine how their hashes and message schedules differ.
+  </p>
+
   <label for="messageA">Message A</label>
-  <input id="messageA" placeholder="First test message">
+  <input id="messageA" value="bum">
+
   <label for="messageB">Message B</label>
-  <input id="messageB" placeholder="Second test message">
-  <button id="compare">Compare patterns</button>
-  <div class="output" id="patternOutput">Enter two messages to begin.</div>
- </div>
+  <input id="messageB" value="tum">
+
+  <label for="patternBlock">Block number</label>
+  <input id="patternBlock" type="number" min="0" value="0">
+
+  <div class="actions">
+    <button class="btn primary" id="compareMessages">Compare messages</button>
+  </div>
+  <div id="patternResult"></div>
 </section>
 
-<section class="tool" id="reverse">
- <div class="panel">
-  <div class="kicker">05 / REVERSE SCHEDULE</div>
-  <h2>Recover the starting words</h2>
-  <p>Enter exactly 16 final schedule words, each eight hexadecimal characters long. The recurrence can then be reversed exactly.</p>
-  <label for="lastWords">W48 through W63</label>
-  <textarea id="lastWords" placeholder="Paste 16 hexadecimal words separated by spaces or new lines..."></textarea>
-  <button id="reverse">Reverse schedule</button>
-  <div class="output" id="reverseOutput">Waiting for 16 words.</div>
- </div>
-</section>
+<section class="panel" id="verifier">
+  <h2>05 — Input Verifier</h2>
+  <p class="description">
+    Check whether a message you supply matches a SHA-256 digest you supply.
+    This is intended for your own educational test examples.
+  </p>
 
-<section class="panel">
- <div class="kicker">THE MATHEMATICS</div>
- <h2>SHA-256 schedule recurrence</h2>
- <div class="output">
-  <pre>W[t] = σ1(W[t-2]) + W[t-7]
-     + σ0(W[t-15]) + W[t-16]
+  <label for="verifyMessage">Your message</label>
+  <input id="verifyMessage" placeholder="Enter a message">
 
-Reverse:
+  <label for="verifyHash">Expected SHA-256 digest</label>
+  <textarea id="verifyHash" placeholder="Enter the expected 64-character digest"></textarea>
 
-W[t-16] = W[t] - σ1(W[t-2])
-        - W[t-7] - σ0(W[t-15])
-
-All arithmetic is modulo 2^32.
-σ0(x) = ROTR7(x) XOR ROTR18(x) XOR SHR3(x)
-σ1(x) = ROTR17(x) XOR ROTR19(x) XOR SHR10(x)</pre>
- </div>
- <div class="stats">
-  <div class="stat"><strong>256 bits</strong><span>Digest length</span></div>
-  <div class="stat"><strong>512 bits</strong><span>16 schedule words</span></div>
-  <div class="stat"><strong>64</strong><span>Total schedule words</span></div>
-  <div class="stat"><strong>32 bits</strong><span>Each schedule word</span></div>
-  <div class="stat"><strong>2^512</strong><span>Possible final word sets</span></div>
-  <div class="stat"><strong>£0</strong><span>No API or subscription</span></div>
- </div>
+  <div class="actions">
+    <button class="btn primary" id="verifyInput">Verify supplied input</button>
+  </div>
+  <div id="verifyResult"></div>
 </section>
 </main>
 
-<footer>SHA-256 PATTERN LAB · Version 2.2 · All calculations run locally in your browser.</footer>
+<footer>
+  SHA-256 Pattern Lab · Browser-based educational mathematics · No server or API required
+</footer>
 
 <script>
 "use strict";
 
-const $ = id => document.getElementById(id);
-const enc = new TextEncoder();
+/* -------------------------------------------------------
+   SHA-256 CONSTANTS
+------------------------------------------------------- */
 
-function rotr(x,n){return (x>>>n)|(x<<(32-n))}
-function s0(x){return rotr(x,7)^rotr(x,18)^(x>>>3)}
-function s1(x){return rotr(x,17)^rotr(x,19)^(x>>>10)}
-function hex(x){return (x>>>0).toString(16).padStart(8,"0")}
+const K = new Uint32Array([
+  0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,
+  0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,
+  0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,
+  0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+  0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,
+  0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,
+  0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+  0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,
+  0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,
+  0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+  0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,
+  0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+]);
 
-function schedule(first){
- const w=new Uint32Array(64);
- w.set(first);
- for(let t=16;t<64;t++){
-  w[t]=(s1(w[t-2])+w[t-7]+s0(w[t-15])+w[t-16])>>>0;
- }
- return w;
+function rotr(x,n){
+  return (x >>> n) | (x << (32-n));
 }
 
-function reverseSchedule(last){
- const w=new Uint32Array(64);
- w.set(last,48);
- for(let t=63;t>=16;t--){
-  w[t-16]=(w[t]-s1(w[t-2])-w[t-7]-s0(w[t-15]))>>>0;
- }
- return w;
+function small0(x){
+  return rotr(x,7) ^ rotr(x,18) ^ (x >>> 3);
 }
 
-function pad(bytes){
- const bits=BigInt(bytes.length)*8n;
- const length=Math.ceil((bytes.length+9)/64)*64;
- const result=new Uint8Array(length);
- result.set(bytes);
- result[bytes.length]=128;
- for(let i=0;i<8;i++){
-  result[length-1-i]=Number((bits>>BigInt(i*8))&255n);
- }
- return result;
+function small1(x){
+  return rotr(x,17) ^ rotr(x,19) ^ (x >>> 10);
 }
 
-function finalBlock(bytes){
- const p=pad(bytes),off=p.length-64;
- const first=new Uint32Array(16);
- for(let i=0;i<16;i++){
-  const j=off+i*4;
-  first[i]=((p[j]<<24)|(p[j+1]<<16)|(p[j+2]<<8)|p[j+3])>>>0;
- }
- return first;
+function big0(x){
+  return rotr(x,2) ^ rotr(x,13) ^ rotr(x,22);
 }
 
-async function digest(bytes){
- if(!crypto.subtle)throw Error("Secure browser cryptography requires HTTPS.");
- const result=await crypto.subtle.digest("SHA-256",bytes);
- return Array.from(new Uint8Array(result),x=>x.toString(16).padStart(2,"0")).join("");
+function big1(x){
+  return rotr(x,6) ^ rotr(x,11) ^ rotr(x,25);
 }
 
-async function calculate(message){
- const bytes=enc.encode(message);
- const hash=await digest(bytes);
- const first=finalBlock(bytes);
- const words=schedule(first);
- return {hash,words,bytes};
+function toHex(n){
+  return (n >>> 0).toString(16).padStart(8,"0");
 }
 
-function show(target,message,kind){
- target.replaceChildren();
- const p=document.createElement("p");
- p.className=kind||"";
- p.textContent=message;
- target.appendChild(p);
+/* -------------------------------------------------------
+   MESSAGE PADDING AND SCHEDULE
+------------------------------------------------------- */
+
+function paddedBlocks(bytes){
+  const length = bytes.length;
+  const total = Math.ceil((length + 9) / 64) * 64;
+  const data = new Uint8Array(total);
+
+  data.set(bytes);
+  data[length] = 0x80;
+
+  const bitLength = BigInt(length) * 8n;
+
+  for(let i=0;i<8;i++){
+    data[total-1-i] =
+      Number((bitLength >> BigInt(i*8)) & 255n);
+  }
+
+  const blocks = [];
+
+  for(let offset=0;offset<total;offset+=64){
+    blocks.push(data.slice(offset,offset+64));
+  }
+
+  return blocks;
 }
 
-function add(target,message,kind){
- const p=document.createElement("p");
- p.className=kind||"";
- p.textContent=message;
- target.appendChild(p);
+function scheduleFromBlock(block){
+  if(block.length !== 64){
+    throw new Error("A SHA-256 block must be 64 bytes.");
+  }
+
+  const W = new Uint32Array(64);
+
+  for(let i=0;i<16;i++){
+    const p=i*4;
+    W[i]=(
+      (block[p]<<24) |
+      (block[p+1]<<16) |
+      (block[p+2]<<8) |
+      block[p+3]
+    ) >>> 0;
+  }
+
+  for(let t=16;t<64;t++){
+    W[t]=(
+      small1(W[t-2])+
+      W[t-7]+
+      small0(W[t-15])+
+      W[t-16]
+    ) >>> 0;
+  }
+
+  return W;
 }
 
-function renderWords(words,start,end){
- const grid=document.createElement("div");
- grid.className="words";
- for(let i=start;i<end;i++){
-  const el=document.createElement("div");
-  el.className="word";
-  const b=document.createElement("b");
-  b.textContent="W"+i;
-  el.append(b,document.createTextNode(hex(words[i])));
-  grid.appendChild(el);
- }
- return grid;
+function getMessageBlocks(message){
+  const bytes=new TextEncoder().encode(message);
+  return paddedBlocks(bytes);
 }
 
-/* FIXED COPY BUTTON
-   First attempts synchronous copying during the actual click.
-   This avoids losing the browser's user-gesture permission.
-   Then tries the modern clipboard API as a backup.
-*/
-function copyButton(text){
- const b=document.createElement("button");
- b.className="alt small";
- b.type="button";
- b.textContent="Copy words";
+async function sha256(message){
+  if(!window.crypto || !crypto.subtle){
+    throw new Error("SHA-256 requires a secure browser context. Open the HTTPS GitHub Pages website.");
+  }
 
- b.onclick=async()=>{
-  b.disabled=true;
-  b.textContent="Copying...";
+  const bytes=new TextEncoder().encode(message);
+  const digest=await crypto.subtle.digest("SHA-256",bytes);
+
+  return Array.from(new Uint8Array(digest))
+    .map(b=>b.toString(16).padStart(2,"0"))
+    .join("");
+}
+
+/* -------------------------------------------------------
+   CLIPBOARD SYSTEM — UPDATED
+------------------------------------------------------- */
+
+async function copyText(text,button,statusElement){
+  const original=button.textContent;
+
+  button.disabled=true;
+  button.textContent="COPYING…";
 
   let copied=false;
 
-  // Attempt 1: synchronous copy inside the click event.
-  let area=document.createElement("textarea");
-  area.value=text;
-  area.setAttribute("readonly","");
-  area.style.position="fixed";
-  area.style.left="-9999px";
-  area.style.top="0";
-  document.body.appendChild(area);
-
+  /*
+    Important: call writeText directly during the click action.
+    Do not wait for another asynchronous operation first.
+  */
   try{
-   area.focus();
-   area.select();
-   area.setSelectionRange(0,area.value.length);
-   copied=document.execCommand("copy");
+    if(navigator.clipboard && window.isSecureContext){
+      const writePromise=navigator.clipboard.writeText(text);
+      await writePromise;
+      copied=true;
+    }
   }catch(error){
-   copied=false;
-  }
-
-  area.remove();
-
-  // Attempt 2: modern clipboard API.
-  if(!copied && navigator.clipboard && window.isSecureContext){
-   try{
-    await navigator.clipboard.writeText(text);
-    copied=true;
-   }catch(error){
     copied=false;
-   }
   }
 
-  b.disabled=false;
+  /*
+    Fallback for browsers where the modern API is unavailable
+    or permission is denied.
+  */
+  if(!copied){
+    const area=document.createElement("textarea");
+    area.value=text;
+    area.setAttribute("readonly","");
+    area.style.position="fixed";
+    area.style.top="0";
+    area.style.left="-10000px";
+    area.style.opacity="0";
+
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    area.setSelectionRange(0,area.value.length);
+
+    try{
+      copied=document.execCommand("copy");
+    }catch(error){
+      copied=false;
+    }
+
+    if(copied){
+      area.remove();
+    }else{
+      area.removeAttribute("readonly");
+      area.style.position="static";
+      area.style.opacity="1";
+      area.style.left="auto";
+      area.style.width="100%";
+      area.style.marginTop="12px";
+      area.rows=4;
+
+      button.insertAdjacentElement("afterend",area);
+      area.focus();
+      area.select();
+      area.setSelectionRange(0,area.value.length);
+    }
+  }
+
+  button.disabled=false;
 
   if(copied){
-   b.textContent="COPIED ✓";
-   b.style.background="#123d35";
-   b.style.borderColor="#45e3a6";
-   b.style.color="#45e3a6";
-   return;
+    button.textContent="COPIED ✓";
+    button.style.borderColor="#42e6a4";
+    button.style.color="#42e6a4";
+
+    if(statusElement){
+      statusElement.textContent="Clipboard updated successfully.";
+      statusElement.className="status good";
+    }
+
+    setTimeout(()=>{
+      button.textContent=original;
+      button.style.borderColor="";
+      button.style.color="";
+    },2500);
+  }else{
+    button.textContent="SELECTED — PRESS CTRL+C";
+    button.style.borderColor="#ffbd69";
+    button.style.color="#ffbd69";
+
+    if(statusElement){
+      statusElement.textContent=
+        "Automatic copying was blocked. The text is selected above. Press Ctrl+C to copy it.";
+      statusElement.className="status info";
+    }
   }
-
-  // Manual fallback if the browser blocks both methods.
-  b.textContent="SELECT TEXT BELOW";
-  b.style.background="#49351e";
-  b.style.borderColor="#ffca80";
-  b.style.color="#ffdfa9";
-
-  let fallback=b.parentElement.querySelector(".copy-fallback");
-
-  if(!fallback){
-   fallback=document.createElement("textarea");
-   fallback.className="copy-fallback";
-   fallback.setAttribute("aria-label","Select these words and copy manually");
-   fallback.rows=3;
-   b.insertAdjacentElement("afterend",fallback);
-  }
-
-  fallback.value=text;
-  fallback.focus();
-  fallback.select();
-
-  let message=b.parentElement.querySelector(".copy-message");
-
-  if(!message){
-   message=document.createElement("p");
-   message.className="copy-message bad";
-   b.insertAdjacentElement("afterend",message);
-  }
-
-  message.textContent="Automatic copying was blocked. The words are selected above. Press Ctrl+C to copy them.";
- };
- return b;
 }
 
-function parseLast(text){
- const parts=text.trim().split(/[\s,]+/).filter(Boolean);
- if(parts.length!==16)throw Error("Exactly 16 words are required.");
- if(!parts.every(x=>/^[0-9a-fA-F]{8}$/.test(x))){
-  throw Error("Every word must contain exactly eight hexadecimal characters.");
- }
- return parts.map(x=>parseInt(x,16)>>>0);
+function addCopyButton(container,text,label="Copy"){
+  const button=document.createElement("button");
+  button.className="btn copy small";
+  button.type="button";
+  button.textContent=label;
+
+  const status=document.createElement("div");
+  status.className="copy-status";
+
+  button.addEventListener("click",()=>{
+    copyText(text,button,status);
+  });
+
+  container.appendChild(button);
+  container.appendChild(status);
 }
 
-function hamming(a,b){
- let count=0;
- for(let i=0;i<a.length;i++){
-  let x=a[i]^b[i];
-  while(x){count++;x&=x-1}
- }
- return count;
+/* -------------------------------------------------------
+   GENERAL DISPLAY HELPERS
+------------------------------------------------------- */
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
 }
+
+function showError(element,message){
+  element.innerHTML=
+    `<div class="result"><div class="status bad">${escapeHTML(message)}</div></div>`;
+}
+
+function renderWords(container,words,start=0,end=64){
+  const grid=document.createElement("div");
+  grid.className="word-grid";
+
+  for(let i=start;i<end;i++){
+    const item=document.createElement("div");
+    item.className="word";
+
+    const label=document.createElement("b");
+    label.textContent="W"+i;
+
+    const value=document.createElement("span");
+    value.textContent=toHex(words[i]);
+
+    item.append(label,value);
+    grid.appendChild(item);
+  }
+
+  container.appendChild(grid);
+}
+
+function hammingHex(a,b){
+  let distance=0;
+
+  for(let i=0;i<a.length;i++){
+    const x=parseInt(a[i],16);
+    const y=parseInt(b[i],16);
+    let v=x^y;
+
+    while(v){
+      distance++;
+      v&=v-1;
+    }
+  }
+
+  return distance;
+}
+
+function hammingWords(a,b){
+  let distance=0;
+
+  for(let i=0;i<a.length;i++){
+    let v=(a[i]^b[i])>>>0;
+
+    while(v){
+      distance++;
+      v&=v-1;
+    }
+  }
+
+  return distance;
+}
+
+/* -------------------------------------------------------
+   TAB NAVIGATION
+------------------------------------------------------- */
 
 document.querySelectorAll("nav button").forEach(button=>{
- button.addEventListener("click",()=>{
-  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
-  document.querySelectorAll(".tool").forEach(x=>x.classList.remove("active"));
-  button.classList.add("active");
-  $(button.dataset.tab).classList.add("active");
- });
+  button.addEventListener("click",()=>{
+    document.querySelectorAll("nav button").forEach(b=>{
+      b.classList.remove("active");
+    });
+
+    document.querySelectorAll(".panel").forEach(panel=>{
+      panel.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    document.getElementById(button.dataset.tab).classList.add("active");
+  });
 });
 
-$("analyse").onclick=()=>{
- const h=$("hashInput").value.trim().toLowerCase();
- const out=$("hashOutput");
+/* -------------------------------------------------------
+   HASH ANALYSER
+------------------------------------------------------- */
 
- if(!/^[0-9a-f]{64}$/.test(h)){
-  show(out,"Invalid hash. A SHA-256 digest must contain 64 hexadecimal characters.","bad");
-  return;
- }
+document.getElementById("analyseHash").addEventListener("click",()=>{
+  const input=document.getElementById("hashInput").value
+    .trim().toLowerCase();
 
- show(out,"Valid SHA-256 digest.","good");
- add(out,"Digest: "+h);
- add(out,"Length: 256 bits / 32 bytes.");
- add(out,"A digest does not reveal a unique message schedule.");
- add(out,"The final 16 words contain 512 bits.");
-};
+  const result=document.getElementById("hashResult");
 
-$("verifyCandidate").onclick=async()=>{
- const out=$("candidateOutput");
- const h=$("targetHash").value.trim().toLowerCase();
- const message=$("candidateMessage").value;
-
- if(!/^[0-9a-f]{64}$/.test(h)){
-  show(out,"Enter a valid 64-character target hash.","bad");
-  return;
- }
-
- try{
-  show(out,"Calculating...");
-  const result=await calculate(message);
-  out.replaceChildren();
-  add(out,"Calculated digest: "+result.hash);
-
-  if(result.hash!==h){
-   add(out,"Candidate does not match this digest.","bad");
-   return;
+  if(!/^[0-9a-f]{64}$/.test(input)){
+    showError(result,"Invalid digest. A SHA-256 hash must contain exactly 64 hexadecimal characters.");
+    return;
   }
 
-  add(out,"Exact match! Candidate verified.","good");
-  add(out,"Final 16 schedule words:");
-  out.appendChild(renderWords(result.words,48,64));
-  out.appendChild(copyButton(Array.from(result.words.slice(48)).map(hex).join(" ")));
- }catch(e){
-  show(out,e.message,"bad");
- }
-};
+  const binary=input.split("").map(char=>
+    parseInt(char,16).toString(2).padStart(4,"0")
+  ).join("");
 
-$("calculate").onclick=async()=>{
- const out=$("scheduleOutput");
+  const ones=[...binary].filter(x=>x==="1").length;
 
- try{
-  show(out,"Calculating...");
-  const r=await calculate($("message").value);
-  out.replaceChildren();
+  result.innerHTML=`
+    <div class="result">
+      <h3>Digest recognised</h3>
+      <div class="hash">${input}</div>
+      <div class="grid">
+        <div class="stat">Algorithm<strong>SHA-256</strong></div>
+        <div class="stat">Digest size<strong>256 bits</strong></div>
+        <div class="stat">Hex characters<strong>64</strong></div>
+        <div class="stat">Binary ones<strong>${ones}</strong></div>
+      </div>
+    </div>`;
 
-  add(out,"SHA-256: "+r.hash,"good");
-  add(out,"Complete 64-word message schedule:");
-  out.appendChild(renderWords(r.words,0,64));
+  const copyArea=document.createElement("div");
+  copyArea.className="actions";
+  result.appendChild(copyArea);
+  addCopyButton(copyArea,input,"Copy digest");
+});
 
-  const recovered=reverseSchedule(r.words.slice(48));
-  const verified=recovered.every((x,i)=>x===r.words[i]);
+document.getElementById("clearHash").addEventListener("click",()=>{
+  document.getElementById("hashInput").value="";
+  document.getElementById("hashResult").innerHTML="";
+});
 
-  add(
-   out,
-   verified?"Reverse verification passed: all 64 words match.":"Verification failed.",
-   verified?"good":"bad"
-  );
+/* -------------------------------------------------------
+   SCHEDULE LAB
+------------------------------------------------------- */
 
-  out.appendChild(
-   copyButton(Array.from(r.words.slice(48)).map(hex).join(" "))
-  );
- }catch(e){
-  show(out,e.message,"bad");
- }
-};
+document.getElementById("useBum").addEventListener("click",()=>{
+  document.getElementById("scheduleInput").value="bum";
+  document.getElementById("blockNumber").value="0";
+});
 
-$("compare").onclick=async()=>{
- const out=$("patternOutput");
+document.getElementById("calculateSchedule").addEventListener("click",async()=>{
+  const message=document.getElementById("scheduleInput").value;
+  const blockNumber=Number(document.getElementById("blockNumber").value);
+  const result=document.getElementById("scheduleResult");
 
- try{
-  show(out,"Comparing...");
-  const a=await calculate($("messageA").value);
-  const b=await calculate($("messageB").value);
+  try{
+    if(!Number.isInteger(blockNumber)||blockNumber<0){
+      throw new Error("Enter a valid block number.");
+    }
 
-  const hashA=Uint8Array.from(a.hash.match(/../g),x=>parseInt(x,16));
-  const hashB=Uint8Array.from(b.hash.match(/../g),x=>parseInt(x,16));
+    const blocks=getMessageBlocks(message);
 
-  const hashDistance=hamming(hashA,hashB);
-  const wordDistance=hamming(a.words.slice(48),b.words.slice(48));
-  const totalWords=hamming(a.words,b.words);
+    if(blockNumber>=blocks.length){
+      throw new Error(`This message has ${blocks.length} padded block(s). Choose a block from 0 to ${blocks.length-1}.`);
+    }
 
-  out.replaceChildren();
-  add(out,"Hash A: "+a.hash);
-  add(out,"Hash B: "+b.hash);
-  add(out,"Hash bit differences: "+hashDistance+" / 256","good");
-  add(out,"Final 16 schedule bit differences: "+wordDistance+" / 512");
-  add(out,"Full schedule bit differences: "+totalWords+" / 2048");
-  add(out,"These are measured differences, not a formula for reversing a digest.");
- }catch(e){
-  show(out,e.message,"bad");
- }
-};
+    const W=scheduleFromBlock(blocks[blockNumber]);
+    const digest=await sha256(message);
 
-$("reverse").onclick=()=>{
- const out=$("reverseOutput");
+    result.innerHTML=`
+      <div class="result">
+        <h3>Calculation complete</h3>
+        <p class="muted">Message: ${escapeHTML(message)}</p>
+        <p class="muted">Padded blocks: ${blocks.length} · Displaying block ${blockNumber}</p>
+        <p class="muted">SHA-256 digest:</p>
+        <div class="hash">${digest}</div>
+        <div class="actions" id="scheduleCopies"></div>
+        <h3>Message schedule — W0 to W63</h3>
+        <p class="muted">All 64 words are shown as unsigned 32-bit hexadecimal values.</p>
+      </div>`;
 
- try{
-  const last=parseLast($("lastWords").value);
-  const all=reverseSchedule(last);
-  const check=schedule(all.slice(0,16));
-  const verified=check.every((x,i)=>x===all[i]);
+    const copies=result.querySelector("#scheduleCopies");
+    addCopyButton(copies,digest,"Copy digest");
+    addCopyButton(copies,Array.from(W).map(toHex).join(" "),"Copy all 64 words");
+    addCopyButton(copies,Array.from(W.slice(48)).map(toHex).join(" "),"Copy final 16 words");
 
-  out.replaceChildren();
-  add(out,"Recovered W0 through W15:","good");
-  out.appendChild(renderWords(all,0,16));
+    renderWords(result,W);
+  }catch(error){
+    showError(result,error.message);
+  }
+});
 
-  add(
-   out,
-   verified?"Forward verification passed.":"Verification failed.",
-   verified?"good":"bad"
-  );
+/* -------------------------------------------------------
+   REVERSE SCHEDULE LAB
+------------------------------------------------------- */
 
-  out.appendChild(
-   copyButton(Array.from(all.slice(0,16)).map(hex).join(" "))
-  );
- }catch(e){
-  show(out,e.message,"bad");
- }
-};
+const BUM_FINAL_WORDS=
+"40ac5c19 ec5adc50 f3edc4fa ef6c157e "+
+"4d6f10cd 832af9df 6ca41afe 292708b7 "+
+"73f894f2 0dee67be 199922a8 57ce9496 "+
+"849bd1e2 d1a3ccc8 e639a09c 51fe94f1";
+
+document.getElementById("loadExample").addEventListener("click",()=>{
+  document.getElementById("reverseInput").value=BUM_FINAL_WORDS;
+});
+
+document.getElementById("reverseSchedule").addEventListener("click",()=>{
+  const result=document.getElementById("reverseResult");
+  const raw=document.getElementById("reverseInput").value.trim();
+
+  const parts=raw.split(/[\s,]+/).filter(Boolean);
+
+  if(parts.length!==16){
+    showError(result,"You must provide exactly 16 hexadecimal words.");
+    return;
+  }
+
+  if(!parts.every(x=>/^[0-9a-fA-F]{1,8}$/.test(x))){
+    showError(result,"One or more words contain invalid hexadecimal characters.");
+    return;
+  }
+
+  const W=new Uint32Array(64);
+
+  for(let i=0;i<16;i++){
+    W[48+i]=parseInt(parts[i],16)>>>0;
+  }
+
+  /*
+    Reverse the schedule:
+    W[t-16] = W[t] - sigma1(W[t-2])
+                     - W[t-7]
+                     - sigma0(W[t-15])
+                     mod 2^32
+  */
+
+  for(let t=63;t>=16;t--){
+    W[t-16]=(
+      W[t]-
+      small1(W[t-2])-
+      W[t-7]-
+      small0(W[t-15])
+    )>>>0;
+  }
+
+  result.innerHTML=`
+    <div class="result">
+      <h3>Reverse calculation complete</h3>
+      <p class="good">All 64 schedule words have been reconstructed.</p>
+      <p class="muted">Recovered initial words: W0 to W47</p>
+      <div class="actions" id="reverseCopies"></div>
+      <h3>Recovered W0–W15</h3>
+    </div>`;
+
+  const copies=result.querySelector("#reverseCopies");
+
+  addCopyButton(copies,Array.from(W.slice(0,16)).map(toHex).join(" "),"Copy W0–W15");
+  addCopyButton(copies,Array.from(W).map(toHex).join(" "),"Copy all 64 words");
+
+  renderWords(result,W,0,16);
+
+  const heading=document.createElement("h3");
+  heading.textContent="Recovered W16–W47";
+  result.appendChild(heading);
+  renderWords(result,W,16,48);
+
+  const finalHeading=document.createElement("h3");
+  finalHeading.textContent="Original supplied W48–W63";
+  result.appendChild(finalHeading);
+  renderWords(result,W,48,64);
+});
+
+/* -------------------------------------------------------
+   PATTERN EXPLORER
+------------------------------------------------------- */
+
+document.getElementById("compareMessages").addEventListener("click",async()=>{
+  const a=document.getElementById("messageA").value;
+  const b=document.getElementById("messageB").value;
+  const blockNumber=Number(document.getElementById("patternBlock").value);
+  const result=document.getElementById("patternResult");
+
+  try{
+    if(!Number.isInteger(blockNumber)||blockNumber<0){
+      throw new Error("Enter a valid block number.");
+    }
+
+    const blocksA=getMessageBlocks(a);
+    const blocksB=getMessageBlocks(b);
+
+    if(blockNumber>=blocksA.length||blockNumber>=blocksB.length){
+      throw new Error("The selected block must exist in both messages.");
+    }
+
+    const hashA=await sha256(a);
+    const hashB=await sha256(b);
+
+    const WA=scheduleFromBlock(blocksA[blockNumber]);
+    const WB=scheduleFromBlock(blocksB[blockNumber]);
+
+    const hashDistance=hammingHex(hashA,hashB);
+    const scheduleDistance=hammingWords(WA,WB);
+    const finalDistance=hammingWords(WA.slice(48),WB.slice(48));
+
+    result.innerHTML=`
+      <div class="result">
+        <h3>Comparison complete</h3>
+        <div class="grid">
+          <div class="stat">Hash bit differences<strong>${hashDistance}/256</strong></div>
+          <div class="stat">Schedule bit differences<strong>${scheduleDistance}/2048</strong></div>
+          <div class="stat">Final 16 word differences<strong>${finalDistance}/512</strong></div>
+        </div>
+        <h3>Digest A</h3>
+        <div class="hash">${hashA}</div>
+        <h3>Digest B</h3>
+        <div class="hash">${hashB}</div>
+        <h3>Interpretation</h3>
+        <p class="muted">
+          Hamming distance counts the number of individual bits that differ.
+          These measurements describe this pair of inputs. They do not provide
+          a formula for recovering an unknown message from its digest.
+        </p>
+        <h3>Final 16 schedule words</h3>
+      </div>`;
+
+    const table=document.createElement("table");
+    table.innerHTML=`
+      <thead><tr><th>Word</th><th>Message A</th><th>Message B</th><th>Different?</th></tr></thead>
+      <tbody></tbody>`;
+
+    const body=table.querySelector("tbody");
+
+    for(let i=48;i<64;i++){
+      const row=document.createElement("tr");
+      row.innerHTML=`
+        <td>W${i}</td>
+        <td>${toHex(WA[i])}</td>
+        <td>${toHex(WB[i])}</td>
+        <td>${WA[i]===WB[i]?"No":"Yes"}</td>`;
+      body.appendChild(row);
+    }
+
+    result.appendChild(table);
+
+  }catch(error){
+    showError(result,error.message);
+  }
+});
+
+/* -------------------------------------------------------
+   INPUT VERIFIER
+------------------------------------------------------- */
+
+document.getElementById("verifyInput").addEventListener("click",async()=>{
+  const message=document.getElementById("verifyMessage").value;
+  const expected=document.getElementById("verifyHash").value
+    .trim().toLowerCase();
+
+  const result=document.getElementById("verifyResult");
+
+  if(!/^[0-9a-f]{64}$/.test(expected)){
+    showError(result,"The expected digest must contain exactly 64 hexadecimal characters.");
+    return;
+  }
+
+  try{
+    const actual=await sha256(message);
+    const matches=actual===expected;
+
+    result.innerHTML=`
+      <div class="result">
+        <h3 class="${matches?"good":"bad"}">
+          ${matches?"MATCH CONFIRMED ✓":"NO MATCH"}
+        </h3>
+        <p class="muted">Calculated digest:</p>
+        <div class="hash">${actual}</div>
+        <p class="muted">Expected digest:</p>
+        <div class="hash">${expected}</div>
+      </div>`;
+
+    const copyArea=document.createElement("div");
+    copyArea.className="actions";
+    result.appendChild(copyArea);
+    addCopyButton(copyArea,actual,"Copy calculated digest");
+
+  }catch(error){
+    showError(result,error.message);
+  }
+});
+
+/* -------------------------------------------------------
+   INITIAL EXAMPLE
+------------------------------------------------------- */
+
+document.getElementById("reverseInput").value=BUM_FINAL_WORDS;
 </script>
 </body>
 </html>
